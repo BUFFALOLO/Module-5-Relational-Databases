@@ -1,0 +1,157 @@
+DATABASE FUNDAMENTALS
+
+Databases are like the backbone of a city's infrastructure, essential & always active in our daily digital world. Take your favorite online bookstore,
+for instance, when you effortlessly search for a book, add it to your cart, & complete your purchase, what's making this smooth experience possible?
+It's the database functioning reliably & efficiently, much like a city's well coordinated public transportation system. Every search you make & every item
+you buy is swiftly & accurately processed by the database, ensuring that all your online activities run smoothly, just like buses & trains that get people
+to their destinations on time.
+
+Relational Databases: Order reigns supreme, data is structured in rows & columns, tables intercommunicate in specific information, & primary keys are unique
+
+Non-Relational Databases: Mix of structures, data lounging in documents, key-value pairs, & wide columns that stretch as far as the eye can see & provides more flexibility.
+
+RELATIONAL DATABASES
+Tables are formatted by different rows with data on. Tables in a relational database are like buildings. Each table (building) contains a variety of rows (rooms).
+Rows each serve a distinct function.
+Columns arrange, symbolizing the structured nature of data in each row.
+Rows & Columns reflect the precise & intentional organization in a relational database.
+
+KEYS
+Primary Key: Identifies each row, ensuring that, inside a table, they are one of a kind.
+Foreign Key: Coherent, interconnected relationships between rows (citizens) from different tables (buildings).
+Foreign Key: Directs you promptly to the exact location of any row (citizen's information), saving time & resources.
+
+UNDERSTANDING CONSTRAINTS
+Unique Constraints: Highlights the differences between tables (building's facade identifiable features), preventing any 2 tables from being indistinguishable.
+Not-Null Constraints: Mandatory alignments for every table (foundations for every structure; it cannot be omitted if the building is to stand).
+Check Constraints: Set specific parameters within which data must fall (similar to the zoning laws of Data City).
+Default Value: Basic means for tables to exist. Similar to the standard mailbox issued to every new building.
+
+RELATIONSHIPS
+One-to-One: is like an exclusive sky bridge that links 2 skyscrapers. This ensures that each entity in 1 table is intricately linked to a single entity in another.
+One-to-Many: is like a bustling main road, connecting a hub to multiple destinations.
+Many-to-Many: is a town square where paths intersect, coordinating a web of connections.
+Self-Referencing: is a hall of mirrors, like an organizational chart reflecting back within itself.
+
+DBMS = Database Management System
+    DBMS are akin to the various foundational structures that uphold the city's operations.
+    These systems are the bedrock upon which our data buildings - the tables - are constructed.
+    Just as the choice of foundation affects a building's integrity & purpose, the choice of a DBMS has a profound impact on the performance & capabilities of an application.
+
+RDBMS = Relational Database Management System
+    RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access.
+    The data in RDBMS is stored in database objects called tables. A table is a collection of related data entries and it consists of columns and rows.
+
+MySQL: Millions of applications rely on its reliable, time-tested infrastructure & caters to a wide range of needs, from small websites to large-scale enterprise applications, making it a go-to choice for many developers
+    It is he best choice when dealing with large datasets (EX: web applications, content management systems & e-commerce platforms).
+
+PostgreSQL: Excels with its cutting-edge technology & sophisticated features, powering complex queries & demanding workloads with precision & efficiency. Developers who need advanced data manipulation, strict adherence to standards & robust extensibility flock to its unparalleled technical prowess.
+    Your go-to when working with data complexity that requires robust query power (EX: geospatial data, scientific research & analytical workloads)
+
+Oracle: Known for its security, scalability & robust enterprise features, it securely stores critical data & transactions for large corporations & govt institutions, demanding expertise & resources to navigate its intricacies.
+    It will be the chosen one if we are trying to highlight scalability & security (EX: enterprise-level projects w/ handle massive volumes of data & complex transactions).
+
+SQLite: An embedded database, living within your application itself, with everything you need right at hand. Ideal for mobile apps & small desktop programs, it excels in its compact size & ease of use. While not suited for sprawling megacities of data, it offers a quaint efficiency for smaller projects. 
+    It is the best option when looking for simplicity & portability. It requires a separate server setup (EX: mobile apps, desktop software & loT devices).
+
+EXPLORING THE CONCEPT OF NORMALIZATION
+Normalization in databases involves structuring data to reduce redundancy & improve data integrity.
+It is the process of organizing data into tables. It involves dividing a database into 2 or more tables & defining relationships between the tables.
+The objective is to isolate data so that modifications of a field can be made.
+This separation ensures clarity, reduces overlap, & makes maintenance more manageable. 
+
+First Normal Form (1NF)
+    A table is in 1NF if it contains no repeating groups of data.
+    Each column cannot be further divided & each row should be unique.
+
+Second Normal Form (2NF)
+    A table is in 2NF if it is in 1NF & all non-key attributes are functional & dependent on the primary key.
+    Each piece of information is stored in only one place.
+
+Third Normal Form (3NF)
+    A table is in 3NF if it is in 2NF & all its attributes are not only fully functionally dependent on the primary key but also non-transitively dependent.
+    Everything should be directly related to the primary key.
+
+ENTITY-RELATIONSHIP DIAGRAMS (ERDs)
+ERDs are like city maps. They provide a visual representation of the relationships between different buildings (entities) & the paths (relationships)
+that connect them. Just as a city map helps you navigate through streets & landmarks, ETDs help database designers understand how data is interconnected.
+ERDs illustrate how entities (like tables in a database) relate to each other, helping to ensure that the database structure is efficient, logical & scalable.
+
+Components of an ERD
+Entities:
+    These are the primary objects in ERDs, akin to the various buildings or landmarks.
+    In a database, an entity typically represents a table (EX: Customers and Orders can be 2 entities in an e-commerce database)
+
+Attributes:
+    These are the details of an entity, similar to the characteristics of a building.
+    In our Customers entity, attributes might include ID, Name & Email.
+
+Relationships:
+    These define how entities interact with each other, much like the roads & pathways connecting buildings in a city.
+    For instance, a Place Order relationship might connect Customer to Orders.
+
+NAMING CONVENTIONS IN DATABASE DESIGN
+Naming conventions bring clarity, predictability & professionalism to the data structures.
+    Use Clear Descriptive Names: Names should be intuitive. For instance, a table holding customer information might be simply names Customers.
+    Stick to a Consistent Case: Pick 1 & stick to it, PascalCase (CustomerOrders), camelCase (customerOrders), snake_case(most popular = customer_orders) or lowercase (customers).
+    Avoid Reserved Words: Avoid using SQL reserved words or function names as identifiers.
+    Use Singular or Plural Table Names Consistently: Name your tabes in singular (Customer) or plural form (most popular = Customers).
+    Prefix Junction Tables for Many-to-Many Relationships: Use a prefix like link_ or junction_, for cases like tables that bridge 2 others in a many-to-many relationship.
+    Be Explicit with Foreign Keys: Foreign keys should reference the original table & primary key, such as customer_id indicating a link to the customer_id in the Customers table.
+    Avoid Redundancy: There's no need to repeat the table name as the column is already within a table. Instead of customer_name, name suffices if the context is clear.
+    Use Singular in Column Names: Columns hold a single attribute for each record, so names should be singular (category) instead of categories.
+    Include Units of Measurement When Applicable: Include units in the name (length_cm).
+    Avoid Abbreviations & Use a Standard Prefix: Avoid abbreviations unless standardized. If cust_id is standard in your organization, its acceptable, but ensure it's universally recognized within your team. 
+    Used Prefixed for Clarity when need it: Prefixes can add clarity. For example billing_address & shipping_address clearly distinguish between different address uses.
+    Document Your Naming Convention: Document your naming conventions to ensure everyone follows the same standards.   
+
+BEST PRACTICES & COMMONS PITFALLS
+Best Practices
+1. Start with a comprehensive plan
+2. Normalize your data
+3. Choose appropriate data types
+4. Use meaningful names
+5. Incorporate constraints
+6. Implement indexing strategically
+7. Back-up your data
+8. Document everything
+
+Common Pitfalls
+1. Over complexity
+2. Ignoring security best practices
+3. Poor indexing strategies
+4. Not planning for scalability
+5. Failing to normalize data
+6. Hard coding values
+
+DATABASE SCHEMAS
+Nowadays data is one of the most important things in the business world, every business captures its customers data to understand their behavior, in the world of the internet, 
+data is growing like crazy, so businesses need more advanced database solutions by which they can maintain the database systems and whenever they need data to solve business problems, 
+they can easily get what data they want without any problem. To fulfill this condition, there is a requirement for the database schema in the picture.
+
+What is Schema?
+    The Skeleton of the database is created by the attributes and this skeleton is named Schema.
+    Schema mentions the logical constraints like table, primary key, etc.
+    The schema does not represent the data type of the attributes.
+
+Database Schema
+    A database schema is a logical representation of data that shows how the data in a database should be stored logically. It shows how the data is organized and the relationship between the tables.
+    Database schema contains table, field, views and relation between different keys like primary key, foreign key.
+    Data are stored in the form of files which is unstructured in nature which makes accessing the data difficult. Thus to resolve the issue the data are organized in structured way with the help of database schema.
+    Database schema provides the organization of data and the relationship between the stored data.
+    Database schema defines a set of guidelines that control the database along with that it provides information about the way of accessing and modifying the data.
+
+Types of Database Schemas
+
+Physical Database Schema: A Physical schema defines, how the data or information is stored physically in the storage systems in the form of files & indices. 
+This is the actual code or syntax needed to create the structure of a database, we can say that when we design a database at a physical level, it’s called physical schema.
+The Database administrator chooses where and how to store the data in the different blocks of storage.
+
+Logical Database Schema: A logical database schema defines all the logical constraints that need to be applied to the stored data, and also describes tables, views, entity relationships, and integrity constraints. 
+The Logical schema describes how the data is stored in the form of tables & how the attributes of a table are connected.
+Using ER modelling the relationship between the components of the data is maintained.
+In logical schema different integrity constraints are defined in order to maintain the quality of insertion and update the data. 
+
+View Database Schema: It is a view level design which is able to define the interaction between end-user and database.
+User is able to interact with the database with the help of the interface without knowing much about the stored mechanism of data in database.
+
