@@ -1,0 +1,336 @@
+DATA DEFINITION LANGUAGE (DDL)
+DDL consists of the commands used to create, modify, & remove database objects like tables, indexes, & users.
+In our workshop analogy, this is akin to drawing up plans for workbenches, shelves & storage units - the essential components of your workspace.
+
+
+KEY COMMANDS IN DDL
+    CREATE
+    This command is like sketching out a new piece of furniture for your workshop. It allows you to create new tables, databases or other structures.
+
+    ALTER
+    Imagine you want to add more drawers to your workbench or expand a shelf. The ALTER command modifies existing database structure.
+
+    DROP
+    Sometimes, you need to clear space by removing an old workbench. DROP command does this for database structures - it removes them entirely.
+
+We need a dedicated space in our workshop to house our e-commerce data. This is where the CREATE DATABASE statement comes in. 
+CREATE DATABASE e_commerce_db;
+
+
+CREATING TABLES
+Think of this as setting up a storage unit to organize customer information.
+Here, id is like a unique identifier for each customer in our workshop, & AUTO_INCREMENT ensures that each customer gets a unique number automatically.
+
+USE e_commerce_db;
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NULL
+);
+
+Now, let's build a second storage unit for order details.
+In the Orders table, id serves as a unique identifier for each order.
+The customer_id column here links to the Customers table, establishing a connection between a customer & their orders. This is like labeling each other w/ the name of the customer who placed it.
+
+CREATE TABLE Orders(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    date DATE NOT NULL,
+    customer_id INT,
+    FOREIGN KEY (customer_id) REFERENCES Customers(id)
+);
+
+
+ESTABLISHING RELATIONSHIPS
+The FOREIGN KEY in the Orders table creates a one-to-many relationship between Customers & Orders.
+One customer (from the Customers table) can place many orders (in the Orders table), but each order is linked to only one customer.
+This is like saying that a customer can have multiple project blueprints (orders), but each blueprint is specifically assigned to one customer.
+
+
+USING ALTER COMMAND
+Sometimes, our initial design needs a little tweaking. Maybe we need an extra column in a table or want to change an existing column's properties. This is where teh ALTER TABLE command shines.
+
+Let's say we want to add a new column, phone to the Customers table. It's like adding a new compartment to our customer information storage unit. 
+ALTER TABLE Customers
+ADD phone VARCHAR(15);
+
+Suppose we realize that the email field needs more space. We can modify it to accommodate longer email addresses.
+ALTER TABLE Customers
+MODIFY email VARCHAR(320);
+
+
+USING DROP COMMAND
+Over time, we might find that certain elements in our workshop are no longer needed. Similarly, the DROP command in MySQL allows us to remove entire tables or databases.
+
+Imagine we have a table that's no longer in use. We can remove it to free up space. This command is like removing an unused workbench to make room for new projects.
+DROP TABLE UnusedTable;
+
+In a more significant overhaul, we might need to remove an entire database. It's like clearing out an entire section of our workshop that we place to repurpose.
+DROP DATABASE ObsoleteDatabase;
+
+
+DATA MANIPULATION LANGUAGE (DML)
+DML is our set of essential tools for adding new details, making adjustments & keeping our workbench clean & organized.
+
+
+INSERT COMMAND
+Just like laying out new materials for a fresh project in our workshop, the INSERT command lets us add new entries to our tables.
+Each INSERT is like starting a new mini-project, placing each piece of material (data) precisely where it needs to be.
+INSERT INTO Customers (name, email, phone)
+VALUES ('John Doe', 'johndoe@example.com', '123-456-7890');
+
+Sometimes, we might not have all the information at hand. In such cases, we can use NULL.
+This is like adding a tool to your workshop without its accompanying manual. It's still functional, but some information is missing.
+INSERT INTO Customers (name, email, phone)
+VALUES ('Jane Doe', NULL, '987-654-3210');
+
+Just like bringing in several tools at once, we can add multiple customers in a single command.
+This approach is efficient, similar to stocking up your workshop with several items in one go.
+INSERT INTO Customers(name, email, phone)
+VALUES ('Carol White', 'carol.white@example.com', '123-555-0303'),
+    ('Bob Brown', 'bob.brown@example.com', '123-555-0304');
+
+
+UPDATE COMMAND
+Sometimes, our projects need a bit of recalibration - a tweak here, a slight modification there. The UPDATE command allows us to make these precise changes.
+UPDATE lets us fine-tune our data projects, ensuring every detail aligns with our vision.
+UPDATE Customers
+SET phone='098-765-4321'
+WHERE id=3;
+
+Sometimes, we need to make several adjustments to a project at once - maybe sanding a piece down while also tightening some screws. Similarly, in our database, we can update several columns in a single go.
+Here, we're changing the name & email for the customer with ID 1. It's like fine-tuning different parts of a single project, ensuring everything is updated in one efficient step.
+UPDATE Customers
+SET name='John Doe', email='john.doe@example.com'
+WHERE id=1;
+
+Imagine you're working on several projects simultaneously in your workshop. You wouldn't want to accidentally adjust the measurements on the wrong project. Similarly, in our database, the WHERE
+clause in an UPDATE command ensures we're modifying exactly where we intend to. This is where using IDs in the WHERE clause becomes essential. IDs are unique identifiers, like a serial number on each of your projects.
+In previous examples, the WHERE clause acts like a precise targeting system, ensuring that only the phone number of Customer with id=3 is updated & name & email of Customer with id=1 is updated.
+Without it, we risk adjusting details for every customer in our database, similar to mistakenly altering every project on our workbench. 
+
+
+DELETE COMMAND
+In a workshop, we carefully select which items to discard. In our data workshop, this careful selection is done using the WHERE clause with DELETE.
+This ensures we only remove the specific data we intend to. For example, imagine a scenario where a customer account needs to be removed from our database.
+Here, id=4 acts as a precises identifier, ensuring that we're removing only the intended customer's data, much like carefully selecting which tool or material to remove from a workbench.
+DELETE FROM Customers
+WHERE id=4;
+
+Sometimes, we might need to remove several items based on a certain condition, like clearing all tools of a certain type.
+This command will remove all customers from the Customers table who don't have an email address listed. It's a targeted cleanup based on a specific criterion.
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM Customers
+WHERE email IS NULL;
+SET SQL_SAFE_UPDATES =1;
+
+
+THE SAFETY SWITCH OF SQL: SET SQL_SAFE_UPDATES
+In SQL, running an UPDATE or DELETE command can be messy, like accidentally spilling paint in a busy workshop. MySQL introduces a safety feature, SQL_SAFE_UPDATES, defaulting to 1, which ensures
+using a key column like an ID in the WHERE clause, preventing unintended changes to many rows.
+Confident about your query? You can temporarily turn off SQL_SAFE_UPDATES by setting it to 0 for flexibility. Like removing a safety guard on a power tool, it's for the skilled but demands caution
+broader changes may impact data extensively.
+After your task, remember to turn SQL_SAFE_UPDATES back on. It's akin to putting the safety guard back on your tool, ensuring you & your database stay safe from unintended accidents.
+
+
+THE IMPORTANCE OF CAUTION
+Just as in a physical workshop where you need to be cautious not to throw away essential tools, in our data workshop, we must use the DELETE command judiciously.
+Deleting data is irreversible, like discarding a tool that you later realized was crucial for your project. Always double-check your WHERE clause to ensure you're removing exactly what you intend to.
+
+
+DATA QUERY LANGUAGE (DQL)
+Think of DQL, & specifically the SELECT statement, as the flashlight that helps us find exactly what we need on our cluttered workbench. It's all about shining a light on the specific tools or 
+materials (data) we need at any given time.
+
+
+SELECT STATEMENT
+In a workshop brimming with tools & materials, finding exactly what you need can be daunting. The SELECT statement in DQL is like a magic wand that reveals the exact tool or material you're looking for amidst the chaos.
+Let's say you want to take a quick glance at all the tools (data) in your 'Customers' toolbox (table).
+This command is like turning on the lights in your workshop, giving you a clear view of everything in the 'Customers' table.
+SELECT * FROM Customers;
+
+Often, you don't need to see everything. Maybe you just need to find a specific screwdriver or hammer. Similarly, we can focus our SELECT statement to retrieve only certain information.
+This is like using a flashlight to highlight only the names & emails of your customers, leaving everything else in the shadows.
+SELECT name, email FROM Customers;
+
+In a workshop filled with diverse tools & materials, finding exactly what you need requires a bit more than a broad light; it requires a focused beam. 
+The WHERE clause in our SELECT statements acts like a laser pointer, pinpointing the exact data we're interested in.
+Need to find customers with specific attributes? This is like focusing your flashlight to find a tool labeled 'Carol White' in your workshop.
+SELECT * FROM Customers
+WHERE name = 'Carol White';
+
+In our data workshop, sometimes we need to find items that meet several specific conditions, or perhaps exclude certain items from our search. 
+This is where our logical operators come into play, acting as the precision tools in our data retrieval toolkit.
+    AND is like a filter, helping us narrow down our search to items that meet multiple conditions.
+    OR allows us to select items that meet at lease one of the conditions we're interested in.
+    NOT is a straightforward way to exclude certain items from our results. 
+
+Suppose we want to find customers name 'John Doe' who also have a specific phone number. This is where we use the AND operator.
+SELECT * FROM Customers
+WHERE name = 'John Doe' AND phone = '123-456-7890';
+
+There are times when we want to find items that meet any one of several conditions. Here, we use the OR operator.
+SELECT * FROM Customers
+WHERE name = 'John Doe' OR phone = '123-456-7890';
+
+Sometimes, we need to exclude certain items from our search. The NOT operator is perfect for this purpose.
+SELECT * FROM Customers
+WHERE NOT name = 'John Doe';
+
+
+ORDER BY CLAUSE
+In a workshop, sometimes you need your tools or materials sorted in a specific order for efficiency.
+In SQL, the ORDER BY clause allows us to sort our data in either ascending (ASC) or descending (DESC) order. It's like arranging screwdrivers from smallest to largest or paints from lightest to darkest.
+Let's say we want to view our list of customers, but we want it alphabetically sorted by name. 
+SELECT * FROM Customers
+ORDER BY name ASC;
+
+Let's modify our command to sort the customers based on their IDs, from the newest (highest id) to oldest (lowest id)
+SELECT * FROM Customers
+ORDER BY id DESC;
+
+
+DISTINCT COMMAND
+In any workshop, duplicates can be confusing & space-consuming. The DISTINCT keyword in SQL helps us eliminate duplicate entries in our result set. 
+If we want to see all the unique email addresses of our customers, DISTINCT is the tool for the job. This command filters out any duplicate email addresses, giving us a clear view of each unique one.
+SELECT DISTINCT email FROM Customers;
+
+
+LIKE OPERATOR
+Sometimes, in our workshop, we need to find tools or materials that have a specific mark or pattern. In SQL, the LIKE operator allows ut to search for data that matches a certain pattern.
+It's like using a magnifying glass to look for screws with a specific head pattern. 
+SELECT * FROM Customers
+WHERE name LIKE 'J%';
+
+Suppose you want to find all customers whose email addresses end with the domain @example.com.
+In these commands, the % symbol acts like a wildcard, representing any number of characters. The queries effectively sift through all the names & email sin the Customers table & pick out only those
+that start with J or conclude with @example.com. 
+SELECT * FROM Customers
+WHERE email LIKE '%@example.com';
+
+
+IN OPERATOR
+Imagine you have a list of specific tools you need to pick from your workshop. The IN operator in SQL is similar; it allows us to specify a list of values & find data that matches any of these values.
+Let's say we want to find customers with IDs 1, 2 & 3.
+SELECT * FROM Customers
+WHERE id IN (1, 2, 3);
+
+Let's create a query to find customers names 'Alice Smith', 'Bob Johnson' and 'Carol White'. This SQL command is similar to selecting specific materials from a shelf.
+SELECT * FROM Customers
+WHERE name IN ('Alice Smith', 'Bob Johnson', 'Carol White');
+
+
+BETWEEN OPERATOR
+In a workshop, you might want to use tools or materials that fall within a certain size or range. Similarly, the BETWEEN operator in SQL helps us find data that falls within a specified range.
+Suppose you want to find all customers whose IDs fall between 1 & 10. This command is like looking for all the tools on your workbench that have serial numbers between 100 & 200. 
+SELECT * FROM Customers
+WHERE id BETWEEN 1 AND 10;
+
+Imagine you want to find all orders places between two dates. This SQL command is like looking for projects that were started & completed in the month.
+SELECT * FROM Orders
+WHERE order_date BETWEEN '2020-01-01' AND '2020-01-31;
+
+
+AGGREGATE FUNCTIONS
+Think of these functions - MIN, MAX, COUNT, AVG - as your go-to measuring tapes & calculators, helping you quickly assess & summarize various aspects of your data.
+Whether you're looking to find the smallest or largest value, count items, or calculate an average, these functions are key tools in your data analysis toolbox.
+
+SELECT MIN(id) FROM Customers;
+
+SELECT MAX(id) FROM Customers;
+
+SELECT MIN(price) FROM Products;
+
+SELECT MAX(price) FROM Products;
+
+COUNT is like taking inventory of your workshop. It helps you determine the number of items in a certain category.
+SELECT COUNT(*) FROM CUSTOMERS;
+
+Let's say we want to calculate the average of a numerical attribute related to customers, such as the average number of orders placed.
+Here, num_orders would be a hypothetical column representing the number of orders each customer has placed. This command would then gie us the average number of orders per customer.
+SELECT AVG(num_orders) FROM Customers;
+
+
+CRAFTING DATA RELATIONSHIPS
+We're focusing on the art of data manipulation into our Orders table, especially in relation to our existing Customers. Just as in a workshop where projects often require different tools & materials
+to work together, in our database, creating orders involves linking them to existing customers.
+
+When we add a new order, it's crucial to link it to an existing customer in the Customers table. This is like ensuring that a new project on your workbench is associated with the right tools
+& materials already present in your workshop.
+
+Let's say customer 'John Doe' (whom we previously added) decides to place an order.
+We know his customer_id is a unique identifier that connects him to this new order. This command creates a new entry in the Order tables, linked to John Doe's customer record.
+INSERT INTO Orders (date, customer_id)
+VALUES ('2020-01-01', 1);
+
+In a workshop, starting a project without the necessary materials leads to complications. Similarly, in our database, adding an order for a non-existent customer can cause issues.
+
+Let's say we want to add 2 new orders for customer 1 & 1 new order for customer 3. This command is like setting up 3 different projects on your workbench, each carefully tagged
+to either customer 1 or customer 3's specific requirements or specifications.
+INSERT INTO Orders (date, customer_id)
+VALUES 
+('2023-08-01', 1), ('2023-08-02', 1), ('2023-08-03', 3);
+
+In the workshop, updating a project might involve resizing a component or changing its color. Similarly, in SQL, we can update specific details of an order, such as changing the order date.
+UPDATE Orders
+SET date = '2023-09-01'
+WHERE id=5;
+
+Let's say a customer cancels an order, & we need to remove it from our database. This command is akin to removing a specific project associated with a particular material or tool from your workshop.
+DELETE FROM Orders
+WHERE customer_id=1 AND id=1;
+
+In our data workshop, think of the Customer and Orders tables as interdependent sections - customers are like the main toolbox, & their orders are the tools inside it.
+These tools (orders) depend on the toolbox (customer) for their existence & relevance. 
+
+To safely remove a customer who has orders, we need a 2-step approach.
+Before deleting the customer, ensure their orders are either deleted (if appropriate) or reassigned to another customer.
+This is similar to either removing the tools from the toolbox or transferring them to a different toolbox.
+Once the orders are handled, you can safely delete the customer.
+
+DELETE FROM Orders
+WHERE customer_id = 1;
+
+UPDATE Orders
+SET customer_id = 2
+WHERE customer_id = 1;
+
+DELETE FROM Customers
+WHERE id = 1;
+
+
+CRAFTING QUERIES ACROSS TABLES
+We can query data from both Customers and Orders tables in a single SELECT statement by matching the id from Customer with the customer_id from Orders ensuring that we can view related info.
+Suppose we want to see details or orders along with information about the customers who placed them.
+This command allows ur to see which customer places which order, along with the order details & customer information. It's like laying out all the tools & their corresponding manuals side by side.
+SELECT o.id AS OrderId, o.date AS OrderDate, c.id AS CustomerID, c.name, c.email
+FROM Customers c, Orders o
+WHERE c.id = o.customer_id;
+
+We cab also refine this approach to look for specific orders or customers.
+This command filters the orders to show only those placed by customers whose names start with 'Carol'. It's like selecting only those projects in your workshop that use a specific brand of tools.
+SELECT o.id AS OrderId, o.date AS OrderDate, c.id AS CustomerId, c.name, c.email
+FROM Customers c, Orders o 
+WHERE c.id = o.customer_id AND c.name LIKE 'Carol%';
+
+
+BEST PRACTICES
+Structured Approach: Always plan your queries & database structure. Think of this as drafting a blueprint before starting any physical project in a workshop. This planning helps avoid unnecessary changes & errors down the line. 
+
+Backup Regularly: Just as you would keep a backup of important workshop documents, regularly backup your database. This practice is crucial for recovering from unintended changes or data loss.
+
+Use Meaningful Names: Choose clear & descriptive names for tables, columns & databases. It's like labeling tools & materials in your workshop for easy identification.
+
+Optimize Performance: Just as you would organize your workshop for efficiency, optimize your database for performance. This includes using appropriate indexes, avoiding redundant data & writing efficient queries.
+
+Secure Your Data: Prioritize the security of your database. This involves setting strong passwords, managing user privileges correctly & protecting against SQL injection attacks, similar to securing your workshop against unauthorized access.
+
+COMMON PITFALLS
+Ignoring Database Normalization: Skipping the normalization process is like cluttering your workshop. It leads to redundant & inconsistent data, making maintenance difficult.
+
+Overusing Wildcards: Excessive use of wildcards, especially at the beginning of a pattern in the LIKE clause, can lead to performance issues, just as overusing a tool in the workshop can lead to inefficiency.
+
+Neglecting Error Handling: Not managing SQL errors is like ignoring a malfunctioning tool. It can lead to bigger issues in your projects. Always check for errors in your SQL statements & handle them appropriately.
+
+Forgetting the WHERE clause in UPDATE & DELETE: This is similar to accidentally adjusting or removing everything from your workbench. Always specify a WHERE clause to target specific records.
+
+Overcomplicating Queries: Complex queries are like tangled wires in a workshop. They can be confusing & hard to debug. Aim for simplicity & clarity in your SQL statements. 
